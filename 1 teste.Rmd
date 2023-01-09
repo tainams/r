@@ -1,0 +1,123 @@
+---
+title: "Relatório - teste"
+author: "Tainam Guairê Rocha Silva"
+date: "2022-09-13"
+output: html_document
+---
+
+```{R}
+knitr::knit_engines$set(python3 = function(options) {
+  code <- paste(options$code, collapse = '\n')
+  out  <- system2(
+    'python3', c('-c', shQuote(code)), stdout = TRUE
+  )
+  knitr::engine_output(options, code, out)
+})
+```
+
+
+# Sucesso
+
+Sucesso depende mais de *garra*  do que qualquer outra coisa.
+ 
+## Componentes da garra
+
+^Perceverança^  &  ~Paixão.~  
+
+### Equação de sucesso
+
+`(Tempo * dedicação) * genética = habilidade ->`   
+`Tempo * habilidade = sucesso`.[^2].  
+
+[^2]: Mencionado na página 54 do livro  
+  
+### Equações
+
+$\sum_{i = 1} (x_i - \mu)^2$  
+$$\sum_{i = 1} (x_i - \mu)^2$$
+
+### Códigos
+
+Chunks:
+```{python3 eval=FALSE}
+e = 1
+for c in range(1, 9):
+  print(e + 4)
+```
+
+**Opções para Chuncks:**  
+* `eval = FALSE`: Exclui o resultado mas não a fórmula;  
+* `echo = FALSE`: Exclui a fórmula mas não o resultado;  
+* `include = FALSE`: Exclui o resultado e a fórmula, mas o chunk ainda é rodado;  
+* `message = FALSE`: Exclui as mensagens;  
+* `warning = FALSE`: Exclui os avisos.  
+
+
+```{r eval=FALSE}
+library(dplyr)  
+library(car)
+library(rstatix)
+library(emmeans)
+library(ggrepel)
+library(knitr)
+library(kableExtra)
+library(htmltools)
+library(rmarkdown)
+```
+
+
+```{r Carregando dados.}
+dados <- read.csv("bee.csv")
+dplyr::glimpse(dados)
+```
+
+```{r Exibindo os dados.}
+# head especifica quantas linhas serão lidas
+# kable deixa bonito
+knitr::kable(head(dados, 14),  col.names = c("Alunos", "1° Bimestre", "2° Bimestre", "3° Bimestre", "4° Bimestre", "Faltas", "Soma", "Média", "Situação", "Resultado final"))
+```
+
+```{r echo = FALSE}
+rmarkdown::paged_table(dados)
+```
+```{r, include = FALSE}
+counter <- 0
+finalv  <- 1
+Soma = dados$Soma
+fim  <- length(Soma)
+
+for (counter in 1: fim){
+  if (finalv < Soma[counter]){
+    finalv <- Soma[counter]
+    place  <- counter
+  }
+}
+bla = dados$Alunos[place]
+
+# nrow pode ser usado para a contagem de diferentes estururas
+```
+
+<br>
+O aluno com a nota mais alta foi o `r bla`.
+
+```{r, include = FALSE}
+boxplot(dados$Faltas ~ dados$X4..Bimestre)
+```
+
+```{r}
+knitr::kable(dados) %>%
+        knitr::kable_styling(full_with = F, bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+```
+
+### Citação  
+> Brilhate autora: *Angela Duckworth*  
+
+### Link
+[Livro Garra Amazom](https://www.amazon.com.br/Garra-paix%C3%A3o-perseveran%C3%A7a-Angela-Duckworth-ebook/dp/B01IW83LPM)  
+![Capa do Livro](https://m.media-amazon.com/images/I/51s-R+MfnFL.jpg){ width=15% }
+
+
+* Tenha um objetivo maior a qual se voltam todas as suas intenções
+  + Tenha algumas 1 a 3 metas que levam a esse objetivo maior
+    - Impeça que qualquer coisa lhe tire do objetivo
+    
